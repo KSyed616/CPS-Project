@@ -1,0 +1,49 @@
+I = imread('incorrect.jpg');
+counter = 0;
+nose = 0;
+mouth = 0;
+%Nose Detection algorithm using Viola Jones algorithm
+%Generating nose detection object
+NoseDetect = vision.CascadeObjectDetector('Nose','MergeThreshold',16);
+%Applying the cascade object detector to the image to locate the nose
+BB=step(NoseDetect,I);
+
+if isempty(BB)
+    counter = counter +1;
+    title = "nose not covered";
+end
+%Displays the image with a box drawn around the detected nose 
+for i = 1:size(BB,1)
+    count
+    rectangle('Position',BB(i,:),'LineWidth',4,'LineStyle','-','EdgeColor','b');
+end
+title('Nose Detection');
+hold off;
+
+%Mouth detection algorith using Viola Jones algorithm
+%Generating nose detection object
+MouthDetect = vision.CascadeObjectDetector('Mouth','MergeThreshold',300);
+%Applying the cascade object detector to the image to locate the mouth
+BB=step(MouthDetect,I);
+
+%Displays the image with a box drawn around the detected mouth
+if isempty(BB)
+    counter = counter +1;
+end
+for i = 1:size(BB,1)
+ rectangle('Position',BB(i,:),'LineWidth',4,'LineStyle','-','EdgeColor','g');
+end
+title('Mouth Detection');
+hold off;
+
+if(counter == 2)
+    clf;
+    imshow(I); hold on;
+    title('No mask detected on following image:')
+end
+
+if(counter == 1)
+    clf;
+    imshow(I); hold on;
+    title('Mask worn incorrectly: nose not covered');
+end
